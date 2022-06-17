@@ -83,6 +83,16 @@ class LinkedList
   end
 
   def find(value)
+    # returns the index of the node containing value, or nil if not found.
+    current_node = @head
+    index = 0
+    until current_node.nil? || current_node.value == value
+      current_node = current_node.next_node
+      index += 1
+    end
+    return nil if current_node.nil?
+
+    index
   end
 
   def to_s

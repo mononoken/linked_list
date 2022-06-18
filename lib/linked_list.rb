@@ -83,7 +83,6 @@ class LinkedList
   end
 
   def find(value)
-    # returns the index of the node containing value, or nil if not found.
     current_node = @head
     index = 0
     until current_node.nil? || current_node.value == value
@@ -96,6 +95,15 @@ class LinkedList
   end
 
   def to_s
+    # Format: ( value ) -> ( value ) -> ( value ) -> nil
+    list_string = ''
+    list_string += "( #{@head.value} )" unless @head.nil?
+    current_node = @head.next_node
+    until current_node.nil?
+      list_string += " -> ( #{current_node.value} )"
+      current_node = current_node.next_node
+    end
+    list_string
   end
 
   def insert_at(value, index)

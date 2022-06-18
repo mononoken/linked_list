@@ -16,15 +16,9 @@ class LinkedList
 
   def initialize(head_value, *node_values)
     @head = Node.new(head_value)
+    @tail = @head
 
-    previous_node = @head
-    node_values.each do |node_value|
-      current_node = Node.new(node_value)
-      previous_node.next_node = current_node unless previous_node.nil?
-      previous_node = current_node
-    end
-
-    @tail = previous_node
+    node_values.each { |value| append(value) }
   end
 
   def append(value)
@@ -49,24 +43,19 @@ class LinkedList
   end
 
   def at(index)
-    if index == 0
-      @head
-    else
-      current_node = @head
-      index.times do
-        current_node = current_node.next_node
-      end
-      current_node
+    current_node = @head
+    index.times do
+      current_node = current_node.next_node
     end
+    current_node
   end
 
   def pop
-    # Remove last element from the list
     previous_tail = @tail
     current_node = @head
     (size - 2).times do
       current_node = current_node.next_node
-    end
+    endt
     current_node.next_node = nil
     @tail = current_node
     previous_tail

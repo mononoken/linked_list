@@ -106,9 +106,11 @@ class LinkedList
     list_string
   end
 
+  # Extra credit
   def insert_at(value, index)
   end
 
+  # Extra credit
   def remove_at(index)
   end
 end

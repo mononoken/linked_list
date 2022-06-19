@@ -116,5 +116,19 @@ class LinkedList
 
   # Extra credit
   def remove_at(index)
+    current_node = at(index)
+    before_node = at(index - 1)
+    next_node = at(index + 1)
+
+    if index == 0
+      @head = next_node
+    elsif index == size - 1
+      @tail = previous_node
+    else
+      before_node.next_node = next_node
+    end
+
+    current_node.next_node = nil
+    current_node
   end
 end

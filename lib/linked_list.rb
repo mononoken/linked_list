@@ -99,6 +99,8 @@ class LinkedList
 
   # Extra credit
   def insert_at(value, index)
+    return if index >= size
+
     new_node = Node.new(value)
 
     current_node = at(index)
@@ -116,6 +118,8 @@ class LinkedList
 
   # Extra credit
   def remove_at(index)
+    return if index >= size
+
     current_node = at(index)
     before_node = at(index - 1)
     next_node = at(index + 1)

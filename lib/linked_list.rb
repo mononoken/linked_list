@@ -52,10 +52,12 @@ class LinkedList
 
   def pop
     previous_tail = @tail
+
     current_node = @head
     (size - 2).times do
       current_node = current_node.next_node
-    endt
+    end
+
     current_node.next_node = nil
     @tail = current_node
     previous_tail
@@ -97,6 +99,19 @@ class LinkedList
 
   # Extra credit
   def insert_at(value, index)
+    new_node = Node.new(value)
+
+    current_node = at(index)
+    new_node.next_node = current_node
+
+    if index == 0
+      @head = new_node
+    else
+      before_node = at(index - 1)
+      before_node.next_node = new_node
+    end
+
+    new_node
   end
 
   # Extra credit

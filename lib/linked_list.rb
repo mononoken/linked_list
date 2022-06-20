@@ -85,7 +85,7 @@ class LinkedList
     index
   end
 
-  def to_s
+  def to_s(node = @head)
     # Format: ( value ) -> ( value ) -> ( value ) -> nil
     list_string = ''
     list_string += "( #{@head.value} )" unless @head.nil?
@@ -94,6 +94,7 @@ class LinkedList
       list_string += " -> ( #{current_node.value} )"
       current_node = current_node.next_node
     end
+    list_string += ' -> nil' if list_string.length > 0
     list_string
   end
 

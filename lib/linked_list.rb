@@ -24,14 +24,12 @@ class LinkedList
     @head = prepend_node
   end
 
-  def size
-    size = 0
-    current_node = @head
-    until current_node.nil?
-      size += 1
-      current_node = current_node.next_node
+  def size(node = head)
+    if node.nil?
+      0
+    else
+      1 + size(node.next_node)
     end
-    size
   end
 
   def at(index)

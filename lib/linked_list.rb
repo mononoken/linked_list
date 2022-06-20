@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+
 
 require_relative 'node'
 
@@ -77,32 +77,13 @@ class LinkedList
     index
   end
 
-  # Refactor
-  def to_s(node = @head)
+  def to_s(node = head)
     # Format: ( value ) -> ( value ) -> ( value ) -> nil
-    list_string = ''
-    list_string += "( #{@head.value} )" unless @head.nil?
-    current_node = @head.next_node
-    until current_node.nil?
-      list_string += " -> ( #{current_node.value} )"
-      current_node = current_node.next_node
+    if node == @tail
+      "( #{@tail.value} ) -> nil"
+    else
+      "( #{node.value} ) -> " + to_s(node.next_node)
     end
-    list_string += ' -> nil' if list_string.length > 0
-    list_string
-  end
-
-  # Old
-  def to_s(node = @head)
-    # Format: ( value ) -> ( value ) -> ( value ) -> nil
-    list_string = ''
-    list_string += "( #{@head.value} )" unless @head.nil?
-    current_node = @head.next_node
-    until current_node.nil?
-      list_string += " -> ( #{current_node.value} )"
-      current_node = current_node.next_node
-    end
-    list_string += ' -> nil' if list_string.length > 0
-    list_string
   end
 
   # Extra credit

@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
-# Node for use with a LinkedList.
-class Node
-  attr_accessor :value, :next_node
-
-  def initialize(value = nil, next_node = nil)
-    @value = value
-    @next_node = next_node
-  end
-end
+require_relative 'node'
 
 # List of connected Nodes
 class LinkedList
@@ -85,6 +77,21 @@ class LinkedList
     index
   end
 
+  # Refactor
+  def to_s(node = @head)
+    # Format: ( value ) -> ( value ) -> ( value ) -> nil
+    list_string = ''
+    list_string += "( #{@head.value} )" unless @head.nil?
+    current_node = @head.next_node
+    until current_node.nil?
+      list_string += " -> ( #{current_node.value} )"
+      current_node = current_node.next_node
+    end
+    list_string += ' -> nil' if list_string.length > 0
+    list_string
+  end
+
+  # Old
   def to_s(node = @head)
     # Format: ( value ) -> ( value ) -> ( value ) -> nil
     list_string = ''

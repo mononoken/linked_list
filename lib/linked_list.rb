@@ -16,7 +16,6 @@ class LinkedList
     end
   end
 
-  # FIX_ME Messy implementation
   def initialize(first_value = nil, *node_values)
     @head = Node.new(first_value)
     @tail = @head
@@ -133,6 +132,8 @@ class LinkedList
 end
 
 # List with no nodes.
+# Huge issues with this implementation. Mainly, if a list starts out as this object,
+# you cannot change the object type after it has been created.
 class EmptyLinkedList < LinkedList
   def initialize
     @head = nil

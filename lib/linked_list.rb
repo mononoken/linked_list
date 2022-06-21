@@ -6,13 +6,24 @@ require_relative 'node'
 class LinkedList
   attr_reader :head, :tail
 
-  def initialize(head_value, *node_values)
-    @head = Node.new(head_value)
-    @tail = @head
+  # List factory
+  def self.create(*values)
+    case values.count
+    when 0
+      EmptyLinkedList.new
+    else
+      LinkedList.new(values[0], values[1..])
+    end
+  end
 
+  # FIX_ME Messy implementation
+  def initialize(first_value = nil, *node_values)
+    @head = Node.new(first_value)
+    @tail = @head
     node_values.each { |value| append(value) }
   end
 
+  # if statement duplicated for append and prepend
   def append(value)
     append_node = Node.new(value)
     @tail.next_node = append_node
@@ -75,8 +86,8 @@ class LinkedList
     index
   end
 
+  # Format: ( value ) -> ( value ) -> ( value ) -> nil
   def to_s(node = head)
-    # Format: ( value ) -> ( value ) -> ( value ) -> nil
     if node == @tail
       "( #{@tail.value} ) -> nil"
     else
@@ -123,3 +134,61 @@ class LinkedList
     current_node
   end
 end
+
+# List with no nodes.
+class EmptyLinkedList < LinkedList
+  def initialize
+    @head = nil
+    @tail = nil
+  end
+
+  def begin_with(value)
+    @head = Node.new(value)
+    @tail = @head
+  end
+
+  def append(value)
+    begin_with(value)
+  end
+
+  def prepend(value)
+    begin_with(value)
+  end
+
+  def size
+    0
+  end
+
+  def at(index)
+    puts to_s
+  end
+
+  def pop
+    puts to_s
+  end
+
+  def contains?
+    puts to_s
+  end
+
+  def find(value)
+    puts to_s
+  end
+
+  def to_s
+    'List is empty.'
+  end
+
+  def insert_at(value, index)
+    puts to_s
+  end
+
+  def remove(index)
+    puts to_s
+  end
+end
+
+class SingularLinkedList < LinkedList
+end
+
+# Three cases. Empty list, list with one node (both head and tail), and list with > 1 nodes.

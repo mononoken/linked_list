@@ -113,20 +113,22 @@ class LinkedList
   def remove_at(index)
     return 'Index invalid.' if index >= size
 
-    current_node = at(index)
-    before_node = at(index - 1)
-    next_node = at(index + 1)
+    removed_node = at(index)
 
-    if index == 0
-      @head = next_node
+    # Big problem. If you remove all the elements, a linked list is now an EmptyLinked List.
+    # But you cannot change an object from one class to another.
+    if size == 1
+      EmptyLinkedList.new
+    elsif index == 0
+      @head = at(index + 1)
     elsif index == size - 1
-      @tail = previous_node
+      @tail = at(index - 1)
     else
-      before_node.next_node = next_node
+      at(index - 1).next_node = at(index + 1)
     end
 
-    current_node.next_node = nil
-    current_node
+    removed_node.next_node = nil
+    removed_node
   end
 end
 

@@ -41,11 +41,11 @@ class LinkedList
   end
 
   def at(index)
-    current_node = @head
+    pointer = @head
     index.times do
-      current_node = current_node.next_node
+      pointer = pointer.next_node
     end
-    current_node
+    pointer
   end
 
   def pop
@@ -63,9 +63,11 @@ class LinkedList
 
   def contains?(value)
     current_node = @head
+
     until current_node.nil? || current_node.value == value
       current_node = current_node.next_node
     end
+
     return false if current_node.nil?
 
     current_node.value == value
@@ -94,18 +96,14 @@ class LinkedList
 
   # Extra credit
   def insert_at(value, index)
-    return if index >= size
+    return 'Index invalid.' if index >= size
 
-    new_node = Node.new(value)
-
-    current_node = at(index)
-    new_node.next_node = current_node
+    new_node = Node.new(value, at(index))
 
     if index == 0
       @head = new_node
     else
-      before_node = at(index - 1)
-      before_node.next_node = new_node
+      at(index - 1).next_node = new_node
     end
 
     new_node
@@ -113,7 +111,7 @@ class LinkedList
 
   # Extra credit
   def remove_at(index)
-    return if index >= size
+    return 'Index invalid.' if index >= size
 
     current_node = at(index)
     before_node = at(index - 1)

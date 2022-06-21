@@ -12,7 +12,7 @@ class LinkedList
     when 0
       EmptyLinkedList.new
     else
-      LinkedList.new(values[0], values[1..])
+      LinkedList.new(values[0], *values[1..])
     end
   end
 
@@ -23,16 +23,13 @@ class LinkedList
     node_values.each { |value| append(value) }
   end
 
-  # if statement duplicated for append and prepend
   def append(value)
-    append_node = Node.new(value)
-    @tail.next_node = append_node
-    @tail = append_node
+    @tail.next_node = Node.new(value)
+    @tail = @tail.next_node
   end
 
   def prepend(value)
-    prepend_node = Node.new(value, @head)
-    @head = prepend_node
+    @head = Node.new(value, @head)
   end
 
   def size(node = head)

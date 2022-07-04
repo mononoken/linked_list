@@ -4,31 +4,27 @@ require_relative 'node'
 
 # List of connected Nodes
 class LinkedList
-  attr_reader :head, :tail
+  attr_reader :head
 
-  # List factory
-  def self.create(*values)
-    case values.count
-    when 0
-      EmptyLinkedList.new
+  def initialize(head_value = nil, *other_values)
+    if head_value.nil? && other_values.empty?
+      @head = nil
     else
-      LinkedList.new(values[0], *values[1..])
+      @head = Node.new(head_value)
+      other_values.each { |value| append(value) }
     end
   end
 
-  def initialize(first_value = nil, *node_values)
-    @head = Node.new(first_value)
-    @tail = @head
-    node_values.each { |value| append(value) }
-  end
-
   def append(value)
-    @tail.next_node = Node.new(value)
-    @tail = @tail.next_node
+    return @head = value if head.nil?
+
+    tail.next_node = Node.new(value)
   end
 
   def prepend(value)
-    @head = Node.new(value, @head)
+    return @head = value if head.nil?
+
+    @head = Node.new(value, head)
   end
 
   def size(node = head)
@@ -37,6 +33,12 @@ class LinkedList
     else
       1 + size(node.next_node)
     end
+  end
+
+  def tail(node = head)
+    return node if node.next_node.nil?
+
+    tail(node.next_node)
   end
 
   def at(index)
@@ -48,46 +50,45 @@ class LinkedList
   end
 
   def pop
-    previous_tail = @tail
+    return 'List is empty.' if head.nil?
 
-    current_node = @head
-    (size - 2).times do
-      current_node = current_node.next_node
+    previous_tail = tail
+
+    if size == 1
+      @head = nil
+    else
+      new_tail = at(size - 2)
+      new_tail.next_node = nil
     end
-
-    current_node.next_node = nil
-    @tail = current_node
     previous_tail
   end
 
-  def contains?(value)
-    current_node = @head
-
-    until current_node.nil? || current_node.value == value
-      current_node = current_node.next_node
+  def contains?(value, node = head)
+    if node.nil?
+      false
+    elsif value == node.value
+      true
+    else
+      contains?(value, node.next_node)
     end
-
-    return false if current_node.nil?
-
-    current_node.value == value
   end
 
-  def find(value)
-    current_node = @head
-    index = 0
-    until current_node.nil? || current_node.value == value
-      current_node = current_node.next_node
-      index += 1
+  def find(value, node = head)
+    if node.nil?
+      nil
+    elsif value == node.value
+      node
+    else
+      find(value, node.next_node)
     end
-    return nil if current_node.nil?
-
-    index
   end
 
   # Format: ( value ) -> ( value ) -> ( value ) -> nil
   def to_s(node = head)
-    if node == @tail
-      "( #{@tail.value} ) -> nil"
+    return 'List is empty.' if head.nil?
+
+    if node == tail
+      "( #{tail.value} ) -> nil"
     else
       "( #{node.value} ) -> " + to_s(node.next_node)
     end
@@ -99,94 +100,23 @@ class LinkedList
 
     new_node = Node.new(value, at(index))
 
-    if index == 0
+    if index.zero?
       @head = new_node
     else
       at(index - 1).next_node = new_node
     end
-
-    new_node
+    head
   end
 
   # Extra credit
   def remove_at(index)
     return 'Index invalid.' if index >= size
+    return 'Nothing to remove.' if size.zero?
 
     removed_node = at(index)
 
-    # Big problem. If you remove all the elements, a linked list is now an EmptyLinked List.
-    # But you cannot change an object from one class to another.
-    if size == 1
-      EmptyLinkedList.new
-    elsif index == 0
-      @head = at(index + 1)
-    elsif index == size - 1
-      @tail = at(index - 1)
-    else
-      at(index - 1).next_node = at(index + 1)
-    end
-
+    at(index - 1).next_node = at(index + 1)
     removed_node.next_node = nil
     removed_node
   end
 end
-
-# List with no nodes.
-# Huge issues with this implementation. Mainly, if a list starts out as this object,
-# you cannot change the object type after it has been created.
-class EmptyLinkedList < LinkedList
-  def initialize
-    @head = nil
-    @tail = nil
-  end
-
-  def begin_with(value)
-    @head = Node.new(value)
-    @tail = @head
-  end
-
-  def append(value)
-    begin_with(value)
-  end
-
-  def prepend(value)
-    begin_with(value)
-  end
-
-  def size
-    0
-  end
-
-  def at(index)
-    puts to_s
-  end
-
-  def pop
-    puts to_s
-  end
-
-  def contains?
-    puts to_s
-  end
-
-  def find(value)
-    puts to_s
-  end
-
-  def to_s
-    'List is empty.'
-  end
-
-  def insert_at(value, index)
-    puts to_s
-  end
-
-  def remove(index)
-    puts to_s
-  end
-end
-
-class SingularLinkedList < LinkedList
-end
-
-# Three cases. Empty list, list with one node (both head and tail), and list with > 1 nodes.
